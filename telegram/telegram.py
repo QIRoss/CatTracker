@@ -1,6 +1,7 @@
 import telebot
 import os
 from choose_picture import choose_picture
+from seta import *
 
 # Replace 'YOUR_BOT_TOKEN' with your actual bot token
 TOKEN = '6646406153:AAF6YOTeoqBKuBP--6vszBwr5GXSrPnx7ss'
@@ -16,7 +17,20 @@ def start_message(message):
 @bot.message_handler(commands=['sendpic'])
 def send_picture(message):
     # Check if the picture file exists
-    picture_path = choose_picture()
+    picture_path, label_path = choose_picture()
+    
+    # If timeout exceeded, get arrow where cat went 
+    if timeout_last_time_seen(get_creation_time(picture_path), timeout=60):
+        x_center, y_center = get_x_center_and_y_center(label_path)
+        print(x_center, y_center)
+        arrow_path = verify_where_cat_went(x_center, y_center)
+        
+        # Send arrow picture
+        if arrow_path is not None:
+            with open(arrow_path, 'rb') as arrow:
+                bot.send_photo(message.chat.id, arrow)
+            return
+        
     if os.path.exists(picture_path):
         # Send the picture
         with open(picture_path, 'rb') as photo:
@@ -37,4 +51,5 @@ def send_gif(message):
         bot.send_message(message.chat.id, 'GIF not found.')
 
 # Start the bot
+print('CatTracker Bot started.')
 bot.polling()

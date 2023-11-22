@@ -14,4 +14,4 @@ COPY . .
 RUN pip install -r requirements.txt
 
 # Define the command to run the object detection script with the specified arguments
-CMD ["python", "detect.py", "--weights", "runs/train/exp/weights/last.pt", "--img", "720", "--conf", "0.80", "--source", "http://streaming_service:5000/video_feed", "--save-crop", "--save-txt"]
+CMD ["python", "detect.py", "--weights", "runs/train/exp/weights/last.pt", "--img", "720", "--conf", "0.80", "--source", "rtsp://kuya:1234@192.168.1.6:554", "--save-crop", "--save-txt"]

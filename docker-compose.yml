@@ -1,14 +1,6 @@
 version: '3'
 
 services:
-  streaming_service:
-    build:
-      context: ./recorder
-    expose:
-      - "5000"
-    devices:
-      - /dev/video0:/dev/video0
-
   telegram_service:
     build:
       context: ./telegram
@@ -20,5 +12,3 @@ services:
       context: ./yolov5
     volumes:
       - ./yolov5:/app
-    depends_on:
-      - streaming_service
